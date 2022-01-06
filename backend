@@ -40,3 +40,46 @@ ALTER USER 'manager'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'Password';
 
 -- flush them privileges
 FLUSH PRIVILEGES;
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+/log
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+./yarn.lock
+# Here we set up the build for the NODE container, we simply set the working directory within docker
+#   and then proceed to copy our package.json files and install necessary node modules.
+# We also expose the port to our API, 8080, and specify our start up command.
+# Docker compose handles all the cross platform persistence via volumes so we don't need to worry about
+#   copying over any of the actual code files for the backend.
+
+# We are using node version 8
+FROM node:14
+
+# Set the working directory within docker image
+WORKDIR /usr/src/app
+
+COPY ./wait-for-it.sh /usr/src/app
+
+# expose port 8000
+EXPOSE 8000
+
